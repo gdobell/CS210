@@ -137,7 +137,17 @@ void quickSort(std::vector<int>& values, int lowInd, int highInd) {
 }
 
 // now for all the testing 
+int main() {
+  // check each function with isSorted: 3 tests total
 
+  int randomTest = {3, 1, 9, 8, 2, 12, 11, 4, 20, 15, 2, 5, 13};
+  int alreadySortedTest = {15, 17, 19, 50, 52, 69, 71, 80};
+  // large input size to show a trend 
+  int reverseSorted = {20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+
+ // tests themselves 
+  cout<< bubbleSort(randomTest));
+  isSorted(bubbleSort(randomTest));
   
 
   
