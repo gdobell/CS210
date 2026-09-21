@@ -1,19 +1,20 @@
 // import files 
 #include <iostream>
 #include <vector>
+#include <chrono>
+#include <random>
+#include <string>
 using namespace std;
 
 
 // isSorted method 
 bool isSorted(const std::vector<int>& values) {
-  for (int i = 0; i < static_cast<int>(values.size()); i++) {
-      if(values[i] - 1 > values[i]) {
+  for (int i = 0; i < static_cast<int>(values.size() - 1); i++) {
+      if(values[i] > values[i + 1]) {
         return false;
-          cout << "That vector is not at all sorted babe yikes";
       }
   }
   return true;
-  cout << "Your vector is all sorted and perfect babe"
 }
 
 // bubble sort 
@@ -23,7 +24,6 @@ void bubbleSort(std::vector<int>& values) {
 // last element is already in place so we dont need to check it for both loops
   for (int i = 0; i < len - 1; i++) {
       bool swapped = false;
-    
       for (int j = 0; j < len - 1 - i; j++) {
           if (values[j] > values [j+1]) {
              int temp = values[j];
@@ -136,21 +136,210 @@ void quickSort(std::vector<int>& values, int lowInd, int highInd) {
   quickSort(values, lowEndInd + 1, highInd);
 }
 
-// now for all the testing 
+// now for the tests themselves 
+
+// generating the random test 
+vector<int> makeRandomVector(int len) {
+   // initialize an empty vector to store the random values
+   vector<int> values;
+   // get a random seed
+   random_device rd;
+   // seed the Mersenne Twister pseudo-random engine
+   // I have never heard of this before but hey when I looked it up this is what I was told to use
+   mt19937 generator(rd());
+   // now define a unifomn range from 1 to 100000
+   uniform_int_distribution<int> distribution(1, 100000);
+
+   // now we need to fill it so we use a loop
+   for (int i = 0; i < len; i++) {
+       values.push_back(distribution(generator));
+   }
+   // return the vector 
+   return values;
+}
+
+// now make the sorted test 
+vector<int>makeSortedVector(int len) {
+   // again initialize the empty vector to store values 
+   vector<int> values;
+   // loop through to add values in ascending order in the amount of len
+   for (int i = 0; i < len; i++) {
+       values.push_back(i);
+   }
+   // return the vector 
+   return values;
+}
+
+
+// now make the reverse test
+vector<int> makeReverseVector(int len) {
+   // initialize the empty vector to store values 
+   vector<int> values;
+   // now its descending order so we loop backwards
+   for (int i = len; i > 0; i--) {
+      values.push_back(i);
+   }
+   return values;
+}
+
+
+// now for timing each of the tests in accordance with a timing table
+double timeBubbleSort(const vector<int>& originalVec) {
+    // make a copy of the vector that we can use 
+    vector<int> values = originalVec;
+
+    // record the current timestamp before sorting 
+    auto start = chrono::high_resolution_clock::now();
+    bubbleSort(values);
+    // then get the end time 
+    auto end = chrono::high_resolution_clock::now();
+
+    // implement our isSorted function
+    if (!isSorted(values)) {
+       cout << "Bubble sort failed bruh :,(" << endl;
+    }
+    else {
+      cout << "Successfully sorted in " << endl;
+    }
+
+    // now calculate the elapsed execution time in milliseconds
+    chrono::duration<double, milli> time = end - start;
+    // return the execution time as a double
+    return time.count();
+}
+
+// its pretty much just a cookie cutter for the other sorts
+
+// selection test
+double timeSelectionSort(const vector<int>& originalVec) {
+    // make a copy of the vector that we can use 
+    vector<int> values = originalVec;
+
+    // record the current timestamp before sorting 
+    auto start = chrono::high_resolution_clock::now();
+    selectionSort(values);
+    // then get the end time 
+    auto end = chrono::high_resolution_clock::now();
+
+    // implement our isSorted function
+    if (!isSorted(values)) {
+       cout << "Selection sort failed bruh :,(" << endl;
+    }
+    else {
+      cout << "Successfully sorted in " << endl;
+    }
+
+    // now calculate the elapsed execution time in milliseconds
+    chrono::duration<double, milli> time = end - start;
+    // return the execution time as a double
+    return time.count();
+}
+
+
+// insertion test
+
+double timeInsertionSort(const vector<int>& originalVec) {
+    // make a copy of the vector that we can use 
+    vector<int> values = originalVec;
+
+    // record the current timestamp before sorting 
+    auto start = chrono::high_resolution_clock::now();
+    insertionSort(values);
+    // then get the end time 
+    auto end = chrono::high_resolution_clock::now();
+
+    // implement our isSorted function
+    if (!isSorted(values)) {
+       cout << "Insertion sort failed bruh :,(" << endl;
+    }
+     else {
+      cout << "Successfully sorted in " << endl;
+    }
+
+    // now calculate the elapsed execution time in milliseconds
+    chrono::duration<double, milli> time = end - start;
+    // return the execution time as a double
+    return time.count();
+}
+
+
+// quick test
+
+double timeQuickSort(const vector<int>& originalVec) {
+    // make a copy of the vector that we can use 
+    vector<int> values = originalVec;
+
+    // record the current timestamp before sorting 
+    auto start = chrono::high_resolution_clock::now();
+    // perform a quick check to make sure the vector is not empty
+  if(!values.empty()) {
+    quickSort(values, 0, static_cast<int>(values.size()) - 1);
+  }
+    // then get the end time 
+    auto end = chrono::high_resolution_clock::now();
+
+    // implement our isSorted function
+    if (!isSorted(values)) {
+       cout << "Quick sort failed bruh :,(" << endl;
+    }
+    else {
+      cout << "Successfully sorted in " << endl;
+    }
+
+    // now calculate the elapsed execution time in milliseconds
+    chrono::duration<double, milli> time = end - start;
+    // return the execution time as a double 
+    return time.count();
+}
+
+
+// now for running the benchmark itself 
+
+void runBenchmark(const vector<int>& values, int len, const string& inputType) {
+    // print the current dataset's type and size 
+    cout << "\t" << inputType << " - Size " << len << "\n" << endl;
+
+   // printing for bubble sort and running the timer function
+   cout << "Bubble sort: " << timeBubbleSort(values) << "ms\n" << endl;
+
+  // printing for selection sort and running the timer function
+   cout << "Selection sort: " << timeSelectionSort(values) << "ms\n" << endl;
+
+  // printing for Insertion sort and running the timer function
+   cout << "Insertion sort: " << timeInsertionSort(values) << "ms\n" << endl;
+
+  // printing for quick sort and running the timer function
+   cout << "Quick sort: " << timeQuickSort(values) << "ms\n" << endl;
+
+  // extra line for formating and such 
+  cout << "------------------------------------------------------------\n" << endl;
+}
+
+
+
+
+// let the testing commence 
 int main() {
-  // check each function with isSorted: 3 tests total
+  // big enough to show a good pattern
+  int lengths[] = {2000, 5000, 10000};
 
-  int randomTest = {3, 1, 9, 8, 2, 12, 11, 4, 20, 15, 2, 5, 13};
-  int alreadySortedTest = {15, 17, 19, 50, 52, 69, 71, 80};
-  // large input size to show a trend 
-  int reverseSorted = {20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+  // loop to store the sizes for iteration
+  for (int i = 0; i < 3; i++) {
+      int len = lengths[i];
 
- // tests themselves 
-  cout<< bubbleSort(randomTest));
-  isSorted(bubbleSort(randomTest));
-  
+     // generate each vector 
+     vector<int> randomValues = makeRandomVector(len);
+     vector<int> sortedValues = makeSortedVector(len);
+     vector<int> reverseValues = makeReverseVector(len);
 
-  
+     // now run the benchmark for each sort
+     runBenchmark(randomValues, len, "Random");
+     runBenchmark(sortedValues, len, "Sorted");
+     runBenchmark(reverseValues, len, "Reverse Sorted");
+  }
+   // return 0 to indicate that the program ran all good
+   return 0;
+}
 
 
 
