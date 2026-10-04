@@ -9,7 +9,7 @@ struct Property {
    string owner;
    Property* next;
 
-   // now assign null values with a constructor 
+   //Now assign null values with a constructor 
    Property(const string& propertyName, int propertyCost) {
       name = propertyName;
       cost = propertyCost;
@@ -18,7 +18,7 @@ struct Property {
    }
 };
 
-// Implementing our linked list
+// Implementing our circular linked list
 class MonopolyBoard {
 // declaring the first and last property space on the board 
 private: 
@@ -33,6 +33,10 @@ public:
       tail = nullptr;
   }
 
+// getStart function to return the start of the board since head is private, its a getter
+Property* getStart() {
+   return head;
+} 
 
 //adding
 void addProperty(const std::string& name, int cost) {
@@ -161,11 +165,11 @@ void printBoard() {
         current = current -> next;
      } while (current != head);
   }
-}
+
 
 // now for the actual movement and actions around the board 
 // moving our player 
-Property* movePlayer(Property* cuurentPosition, int spaces) {
+Property* movePlayer(Property* currentPosition, int spaces) {
     // if the player is at the beginning of the board just reutrn the head
     if (currentPosition == nullptr) {
        return head;
@@ -204,6 +208,7 @@ bool purchaseProperty(Property* property, const string& playerName) {
      return true;
 }
 
+
 // since there is no automatic garbage collection like Java we need a destructor 
 // we used new which points to dynamic memory so we need to clean up allocated nodes 
 // ai disclosure here I used it to help me write one of these because I have never done it before 
@@ -220,13 +225,15 @@ bool purchaseProperty(Property* property, const string& playerName) {
 
     while(current != nullptr) {
         // save the address of the next space before we delete the current one so we keep the pointer
-        Property* nextproperty = current -> next;
+        Property* nextProperty = current -> next;
         // free the heap memory
         delete current;
         // advance the pointer
         current = nextProperty;
     }
+}
 };
+
 
 // now create out players 
 struct Player {
@@ -240,7 +247,7 @@ struct Player {
 };
 
 // now onto main where we create the details of our board 
-int main()
+int main() {
    MonopolyBoard board;
    // start with the go square
    board.addProperty("GO", 0);
@@ -268,10 +275,10 @@ int main()
 
   // test for removal
   bool removed = board.removeProperty("Temp");
-  if (tail -> "Temp) {
-    return "The Temp was not removed: Test failed";
+  if (!removed) {
+    cout << "The Temp was not removed: Test failed";
   } else {
-    return "The Temp was removed: Test passed";
+    cout << "The Temp was removed: Test passed";
   }
 
   // starting board
@@ -285,12 +292,12 @@ int main()
   int moves[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
   // now simulate all of thier turns 
-  cout<< "\n--------- 10 PLAYER TURNS ---------"
+  cout<< "\n--------- 10 PLAYER TURNS ---------";
   for (int i = 0; i < 10; i++) {
       Player* currentPlayer;
       // if its even player 1 starts and if its odd then player 2 starts
       // meaning player 1 starts and then player 2 goes alternating turns 
-      if (turn % 2 == 0;
+      if (i % 2 == 0) {
         currentPlayer = &player1;
       } else {
           currentPlayer = &player2;
@@ -303,17 +310,18 @@ int main()
       currentPlayer -> position = board.movePlayer(currentPlayer -> position, spaces);
 
       // print out info 
-      cout << "Turn " << i + 1 << ": " << currentP;ayer -> name 
+      cout << "Turn " << i + 1 << ": " << currentPlayer -> name 
         << " moved " << spaces << " spaces and landed on " << currentPlayer -> position -> name
         << "\n";
 
      // now call the purchase property function
      board.purchaseProperty(currentPlayer-> position, currentPlayer -> name);
      cout << "\n";
-}
+  }
+
 
 // now print the final board to see what happened 
-cout<< "\n--------- FINAL BOARD ---------"
+cout<< "\n--------- FINAL BOARD ---------\n";
 board.printBoard();
 
 return 0;
