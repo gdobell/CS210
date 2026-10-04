@@ -159,7 +159,7 @@ void printBoard() {
      do { 
         // print the property name, cost, and ownder in the same line
          cout << current -> name << " / Cost: $" 
-         << current -> cost << " / Owner: " << current -> owner << "\n";
+         << current -> cost << " / Owner: " << current -> owner << "\n\n";
 
         // set the new current position
         current = current -> next;
@@ -276,13 +276,13 @@ int main() {
   // test for removal
   bool removed = board.removeProperty("Temp");
   if (!removed) {
-    cout << "The Temp was not removed: Test failed";
+    cout << "The Temp was not removed: Test failed\n";
   } else {
-    cout << "The Temp was removed: Test passed";
+    cout << "The Temp was removed: Test passed\n";
   }
 
   // starting board
-  cout<< "\n--------- INITIAL BOARD ---------";
+  cout<< "\n--------- INITIAL BOARD ---------\n\n";
   board.printBoard();
 
   // now our players!
@@ -292,7 +292,7 @@ int main() {
   int moves[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
   // now simulate all of thier turns 
-  cout<< "\n--------- 10 PLAYER TURNS ---------";
+  cout<< "\n--------- 10 PLAYER TURNS ---------\n\n";
   for (int i = 0; i < 10; i++) {
       Player* currentPlayer;
       // if its even player 1 starts and if its odd then player 2 starts
@@ -312,7 +312,7 @@ int main() {
       // print out info 
       cout << "Turn " << i + 1 << ": " << currentPlayer -> name 
         << " moved " << spaces << " spaces and landed on " << currentPlayer -> position -> name
-        << "\n";
+        << "\n\n";
 
      // now call the purchase property function
      board.purchaseProperty(currentPlayer-> position, currentPlayer -> name);
@@ -321,7 +321,7 @@ int main() {
 
 
 // now print the final board to see what happened 
-cout<< "\n--------- FINAL BOARD ---------\n";
+cout<< "\n--------- FINAL BOARD ---------\n\n";
 board.printBoard();
 
 return 0;
