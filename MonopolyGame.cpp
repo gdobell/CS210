@@ -197,6 +197,12 @@ bool purchaseProperty(Property* property, const string& playerName) {
         return false;
      }
 
+     // make sure the GO space cannot be bought 
+     if (property -> cost == 0) {
+        cout << "GO cannot be purchased\n";
+        return false;
+    }
+ 
      // if the property is purchasable 
      // set the new owner name 
      property -> owner = playerName;
