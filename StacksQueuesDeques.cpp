@@ -4,31 +4,33 @@ using namespace std;
 // Implement a stack using an array-based representation.
 class ArrayStack {
 //Initialize the array size as well as a null value for the topInd
-     int arr[20];
+     int arr[5];
      int topInd = -1;
 
 public:
 // push
    void push(int value) {
        // first check if we are still within our set array size, we cant use .size() like java :(
-      if (topInd >= 19) {
+      if (topInd >= 4) {
          cout << "Stack is full\n";
       } else {
           // if we are not above our set size, then add the value into the next index 
          arr[++topInd] = value;
+         cout << "Pushed: " << value << "\n";
       }
    }
    // isEmpty before pop because I'm going to use it there 
    bool isEmpty() {
        // t or f statement 
       return topInd == -1;
+      
    }
 
    // pop
    int pop() {
        // check if we have any values in our array
        if (isEmpty()) {
-           cout << "Stack Empty";
+           cout << "Stack Empty\n";
            return -1;
        } else {
            // if we do then just decrement the index and return the previous value
@@ -69,13 +71,14 @@ public:
        // creates a new node and then assigns it to the top because we can only access a stack
        // from the top 
        top = new Node{value, top};
+       cout << "Pushed: " << value << "\n";
    }
 
    // pop
    int pop() {
        // check if its empty 
        if (isEmpty()) {
-          cout << "Stack is empty";
+          cout << "Stack is empty\n";
           return -1;
        } else {
          // save the top node's adress
@@ -98,7 +101,7 @@ public:
 // Implement a queue using an array-based representation.
 class ArrayQueue {
    // array size
-   int arr[20];
+   int arr[5];
    // front for dequeue 
    int front = 0;  
    // back for enqueue 
@@ -115,18 +118,19 @@ public:
   // enqueue: adds a value at the end of the queue
   void enqueue(int value) {
       // check if we overflowed it
-      if (elements >= 20) {
-         cout << "Queue is full";
+      if (elements >= 5) {
+         cout << "Queue is full\n";
          return;
       } else {
           // add to the end 
           // rear = rear + 1 would cause an overflow without knowing it, so we add the modulo
-          // so that if it gets to 20, we will just wrap around back to the beginning
-          back = (back + 1) % 20;
+          // so that if it gets to 5, we will just wrap around back to the beginning
+          back = (back + 1) % 5;
           // now insert the value at the new rear index
           arr[back] = value;
           // increment the element count
           elements++;
+          cout << "Enqueued: " << value << "\n";
       }
   }
 
@@ -134,13 +138,13 @@ public:
    int dequeue() {
       // check if it's empty
       if (isEmpty()) {
-         cout << "Queue is empty";
+         cout << "Queue is empty\n";
          return -1;
       } else {
           // save the front value
           int oldFrontOfTheLine = arr[front];
           // advance the index again using the modulo
-          front = (front + 1) % 20;
+          front = (front + 1) % 5;
           // decrement the elements
           elements--;
           // return the old front
@@ -188,12 +192,13 @@ public:
           back -> next = newNode;
           back = newNode;
        }
+       cout << "Enqueued: " << value << "\n";
    }
 
    // now dequeue() {
    int dequeue() {
        if (isEmpty()) {
-         cout << "Nothing to dequeue, Queue is empty";
+         cout << "Nothing to dequeue, Queue is empty\n";
          return -1;
        } else {
            // save the front value 
@@ -202,7 +207,7 @@ public:
            int value = temp -> value;
            // move the front pointer forward 
            front = front -> next;
-           // check for an edge case, if there are no elemenets left 
+           // check for an edge case, if there are no elements left 
            if (front == nullptr) {
                back = nullptr;
            }
@@ -219,7 +224,7 @@ public:
 // Implement a deque using an array-based representation.
 class ArrayDeque {
       // initialize array size, front, back, and # of elements 
-      int arr[20];
+      int arr[5];
       int front = 0;
       int elements = 0;
 
@@ -232,30 +237,32 @@ public:
      // push from the front 
      void pushFront(int value) {
          // check if we went over our array size 
-         if (elements >= 20)  {
-           cout << "Deque is full";
+         if (elements >= 5)  {
+           cout << "Deque is full\n";
          } else {
              // update the front's index
-             front = (front - 1 + 20) % 20;
+             front = (front - 1 + 5) % 5;
              // update the value 
              arr[front] = value;
              // update the # of elements
              elements++;
+             cout << "Pushed Front: " << value << "\n";
          }
      }
 
       // push from the back
       void pushBack(int value) {
          // check if we went over our array size 
-         if (elements >= 20)  {
-           cout << "Deque is full";
+         if (elements >= 5)  {
+           cout << "Deque is full\n";
          } else {
              // update the back's index, this needs the # of elements since the back index changes
-             int backInd = (front + elements) % 20;
+             int backInd = (front + elements) % 5;
              // update the value 
              arr[backInd] = value;
              // update the # of elements
              elements++;
+             cout << "Pushed Back: " << value << "\n";
          }
       }
 
@@ -263,13 +270,13 @@ public:
        int popFront() {
            // check if empty
            if (isEmpty()) {
-              cout << "Deque is empty";
+              cout << "Deque is empty\n";
               return -1;
            } else {
                 // save the front value
                 int value = arr[front];
                 // reassign the index
-                front = (front + 1) % 20;
+                front = (front + 1) % 5;
                 // decrement # of elements thus getting rid of the value
                 elements--;
                 // return the value 
@@ -281,11 +288,11 @@ public:
        int popBack() {
            // check if empty
            if (isEmpty()) {
-              cout << "Deque is empty";
+              cout << "Deque is empty\n";
               return -1;
            } else {
                 // reassign the index
-                int backInd = (front + elements - 1) % 20;
+                int backInd = (front + elements - 1) % 5;
                 // save the back value
                 int value = arr[backInd];
                 // decrement # of elements thus getting rid of the value
@@ -335,6 +342,7 @@ public:
          head -> prev = newNode;
          head = newNode;
       }
+      cout << "Pushed Front: " << value << "\n";
   }
 
   // push from the back
@@ -350,13 +358,14 @@ public:
          tail -> next = newNode;
          tail = newNode;
       }
+       cout << "Pushed Back: " << value << "\n";
   }
 
 // pop from the front
 int popFront() {
     // check if its empty
     if (isEmpty()) {
-       cout << "The Deque is empty";
+       cout << "The Deque is empty\n";
        return -1;
     } else {
       // save the value and address of the head
@@ -383,7 +392,7 @@ int popFront() {
 int popBack() {
     // check if its empty
     if (isEmpty()) {
-       cout << "The Deque is empty";
+       cout << "The Deque is empty\n";
        return -1;
     } else {
       // save the value and address of the head
@@ -403,3 +412,102 @@ int popBack() {
     }
 }
 };
+
+
+// now testing
+int main() {
+// I used ai to solve the issue of printing a 1 or 0 for isEmpty. With this statement true or false
+// will be printed instead 
+cout << boolalpha;
+     
+cout << "---------------Testing ArrayStack---------------\n";
+cout << "-------Specfically testing stack underflow-------\n";
+ArrayStack arrS;
+arrS.push(3);
+arrS.push(4);
+arrS.push(5);
+cout << "Popped: " << arrS.pop() << "\n";
+cout << "isEmpty? " << arrS.isEmpty() << "\n";
+cout << "Popped: " << arrS.pop() << "\n";
+cout << "Popped: " << arrS.pop() << "\n";
+cout << "isEmpty? " << arrS.isEmpty() << "\n";
+arrS.push(858);
+cout << "Popped: " << arrS.pop() << "\n";
+arrS.push(8675309);
+
+cout << "-------------Testing LinkedListStack-------------\n";
+cout << "--------Specfically testing stack overflow--------\n";
+LinkedListStack linkS;
+linkS.push(5);
+linkS.push(6);
+linkS.push(7);
+linkS.push(8);
+cout << "Popped: " << linkS.pop() << "\n";
+cout << "isEmpty? " << linkS.isEmpty() << "\n";
+linkS.push(567);
+linkS.push(8);
+cout << "isEmpty? " << linkS.isEmpty() << "\n";
+cout << "Popped: " << linkS.pop() << "\n";
+
+cout << "------------------Testing ArrayQueue------------------\n";
+cout << "--------Specfically testing circular wrapping---------\n";
+ArrayQueue arrQ;
+arrQ.enqueue(101);
+arrQ.enqueue(102);
+arrQ.enqueue(103);
+arrQ.enqueue(104);
+arrQ.enqueue(105);
+arrQ.enqueue(106);
+cout << "isEmpty? " << arrQ.isEmpty() << "\n";
+cout << "Dequeued: " << arrQ.dequeue() << "\n";
+cout << "Dequeued: " << arrQ.dequeue() << "\n";
+arrQ.enqueue(107);
+
+cout << "------------Testing LinkedListQueue------------\n";
+cout << "--------Specfically testing underflow----------\n";
+LinkedListQueue linkQ;
+linkQ.enqueue(1);
+linkQ.enqueue(3);
+linkQ.enqueue(5);
+linkQ.enqueue(7);
+cout << "Dequeued: " << linkQ.dequeue() << "\n";
+cout << "Dequeued: " << linkQ.dequeue() << "\n";
+cout << "Dequeued: " << linkQ.dequeue() << "\n";
+cout << "Dequeued: " << linkQ.dequeue() << "\n";
+cout << "isEmpty? " << linkQ.isEmpty() << "\n";
+cout << "Dequeued: " << linkQ.dequeue() << "\n";
+linkQ.enqueue(314159);
+
+cout << "------------------Testing ArrayDeque----------------\n";
+cout << "--------Not testing anything in particular----------\n";
+ArrayDeque arrD;
+arrD.pushBack(11);
+arrD.pushBack(12);
+arrD.pushFront(13);
+arrD.pushFront(14);
+cout<< "Pop Back: " << arrD.popBack() << "\n";
+cout<< "Pop Front: " << arrD.popFront() << "\n";
+cout<< "Pop Back: " << arrD.popBack() << "\n";
+cout<< "Pop Front: " << arrD.popFront() << "\n";
+cout << "isEmpty? " << arrD.isEmpty() << "\n";
+arrD.pushBack(987654321);
+
+cout << "------------------Testing LinkedListDeque----------------\n";
+cout << "-----------Not testing anything in particular------------\n";
+LinkedListDeque linkD;
+linkD.pushFront(123);
+linkD.pushBack(456);
+linkD.pushFront(789);
+linkD.pushBack(101112);
+cout<< "Pop Front: " << linkD.popFront() << "\n";
+cout<< "Pop Front: " << linkD.popFront() << "\n";
+cout<< "Pop Back: " << linkD.popBack() << "\n";
+cout<< "Pop Back: " << linkD.popBack() << "\n";
+cout << "isEmpty? " << linkD.isEmpty() << "\n";
+linkD.pushFront(10001);
+cout<< "Pop Back: " << linkD.popBack() << "\n";
+
+return 0;
+}
+
+
