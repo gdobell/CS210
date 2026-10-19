@@ -164,6 +164,18 @@ enum class CollisionStrategies {
      quadraticProbing, 
      doubleHashing
 };
+
+// so I can print out Linear probing instead of a 0 index
+string strategyName(CollisionStrategies strat) {
+   switch(strat) {
+       case CollisionStrategies::linearProbing: return "Linear Probing";
+       case CollisionStrategies::quadraticProbing: return "Quadratic Probing";
+       case CollisionStrategies::doubleHashing: return "Double Hashing";
+   }
+   return "Idk man";
+}
+          
+          
           
 // hash table implementation
 class collTable {
@@ -385,7 +397,7 @@ for (size_t i = 0; i < 3; i++) {
      bool after = probe.find("TimmyTurner");
 
      // output for each different strategy
-     cout << "Probe strategy: " << static_cast<int>(method)
+     cout << "Probe strategy: " << strategyName(method)
          << ": find = " << before << ", remove = " << removed
          << ", after = " << after << "\n";
 }
