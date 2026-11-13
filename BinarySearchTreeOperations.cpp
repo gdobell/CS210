@@ -146,14 +146,14 @@ bool remove(int key) {
      // removing a node with 2 kids 
      else {
        // find the sucessor which is the most left child of the right subtree
-       Node* sucessor = currentNode -> right;
+       Node* successor = currentNode -> right;
        // while we go to the left 
-       while (sucessor -> left) {
+       while (successor -> left) {
             // keep going left 
-            successor = sucessor -> left;
+            successor = successor -> left;
        }
        // copy the key 
-       currentNode -> key = sucessor -> key;
+       currentNode -> key = successor -> key;
        parent = currentNode;
 
        // reassign currentNode and the key so that the loop will continue 
@@ -162,7 +162,7 @@ bool remove(int key) {
      }
   } 
   // search the right
-  else if (currentNode -> key < key)
+  else if (currentNode -> key < key) {
      parent = currentNode;
      currentNode = currentNode -> right;
      } else {
@@ -259,26 +259,24 @@ int main() {
     // run each traversal and height 
     // we cant chain them because they return void 
     cout << "Initial Inorder Traversal: ";
-    bst.inorderTrv() ;
+    bst.inorderTrv();
     cout << "\n";
     
-    cout << "Initial Preorder Traversal: " 
-    bst.preorderTrv() 
+    cout << "Initial Preorder Traversal: ";
+    bst.preorderTrv();
     cout << "\n";
     
-    cout << "Initial Postorder Traversal: "
-    bst.postorderTrv() 
+    cout << "Initial Postorder Traversal: ";
+    bst.postorderTrv(); 
     cout << "\n";
     
-    cout << "Initial height: " 
-    bst.height() 
-    cout << "\n";
+    cout << "Initial height: " << bst.height() << "\n";
 
     // search for one key that is in the list and one that is not there
     int realKey = 69;
     int fakeKey = 88;
     cout << "Searching for " << realKey << ": " 
-        << (bst.search(realkey) != nullptr ? "Found it!" : "Didn't find it :(") << "\n";
+        << (bst.search(realKey) != nullptr ? "Found it!" : "Didn't find it :(") << "\n";
 
     cout << "Searching for " << fakeKey << ": " 
         << (bst.search(fakeKey) != nullptr ? "Found it!" : "Didn't find it :(") << "\n";
@@ -288,15 +286,21 @@ int main() {
     // so I printed them in the cout statements 
     // leaf
     bst.remove(5);
-    cout << "After removing 5 (leaf node) our new tree is: " << bst.inorderTrv() << "\n";
+    cout << "After removing 5 (leaf node) our new tree is: ";
+    bst.inorderTrv(); 
+    cout << "\n";
 
     // 1 child
     bst.remove(72);
-    cout << "After removing 72 (has one left child) our new tree is: " << bst.inorderTrv() << "\n";
+    cout << "After removing 72 (has one left child) our new tree is: ";
+    bst.inorderTrv();
+    cout << "\n";
 
     // 2 children
     bst.remove(99);
-    cout << "After removing 99 (has 2 children) our new tree is: " << bst.inorderTrv() << "\n";
+    cout << "After removing 99 (has 2 children) our new tree is: ";
+    bst.inorderTrv(); 
+    cout << "\n";
 
 
     return 0;
